@@ -128,19 +128,6 @@ RUN mkdir -p \
 		/etc/services-config/supervisor/supervisord.d/sshd-bootstrap.conf \
 		/etc/supervisord.d/sshd-bootstrap.conf \
 	&& chmod 700 \
-	
-	
-RUN yum install python python-pip python-m2crypto libnet1-dev libpcap0.8-dev libnet libpcap libnet-devel libpcap-devel git gcc -y
-RUN git clone https://github.com/snooda/net-speeder.git net-speeder
-WORKDIR net-speeder
-RUN chmod +x build.sh
-RUN ./build.sh
-
-RUN yum install wget -y
-RUN wget --no-check-certificate https://raw.githubusercontent.com/liangqi20001/shadowsocks_install/master/shadowsocksR.sh
-RUN chmod +x shadowsocksR.sh
-RUN ./shadowsocksR.sh 2>&1 | tee shadowsocksR.log
-RUN 
 
 EXPOSE 22
 
@@ -194,6 +181,15 @@ jdeathe/centos-ssh:${RELEASE_VERSION} \
 	org.deathe.url="https://github.com/jdeathe/centos-ssh" \
 	org.deathe.description="CentOS-7 7.3.1611 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
 	
-	
+RUN yum install python python-pip python-m2crypto libnet1-dev libpcap0.8-dev libnet libpcap libnet-devel libpcap-devel git gcc -y
+RUN git clone https://github.com/snooda/net-speeder.git net-speeder
+WORKDIR net-speeder
+RUN chmod +x build.sh
+RUN ./build.sh
+
+RUN yum install wget -y
+RUN wget --no-check-certificate https://raw.githubusercontent.com/liangqi20001/shadowsocks_install/master/shadowsocksR.sh
+RUN chmod +x shadowsocksR.sh
+RUN ./shadowsocksR.sh 2>&1 | tee shadowsocksR.log
 
 CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
